@@ -1,0 +1,25 @@
+@charset "utf-8";
+body{
+    background: #F0F0F0;
+}
+.my-content{
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background: #fff;
+    padding: 10px;
+}
+.widget{
+    padding: 10px;
+    border-radius: 10px;
+    background: #fff;
+}
+
+/*大纲*/
+.editormd-markdown-toc a{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    display:-webkit-box!important;
+    word-break:break-all;
+    -webkit-line-clamp:1;
+    -webkit-box-orient:vertical;
+}

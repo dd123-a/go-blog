@@ -1,0 +1,210 @@
+{{define "index/index.html"}}
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>tscgo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="/static/favicon.ico" />
+    <link rel="stylesheet" type="text/css" media="screen" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/static/css/index_style.css">
+    <link rel="stylesheet" href="/static/css/index_my_style.css">
+    <style>
+        /*选中cate,tag*/
+        .select-tag{
+            background: #0256ce!important;
+            color: #fff!important;
+            border-radius: 5px;
+        }
+        .select-tag:hover{
+            color: #fff!important;
+        }
+        .select-tag>.text:hover{
+            color: #fff!important;
+        }
+        .widget_hot ul li a{
+            padding: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-default" id="navbar">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-navbar" aria-expanded="false">
+                        <span class="sr-only"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <h1 class="logo">
+                        <a href="/">TSCGO</a>
+                    </h1>
+                </div>
+                <div class="collapse navbar-collapse" id="header-navbar">
+                    <form class="navbar-form visible-xs" action="#" method="POST">
+                        <div class="input-group">
+                            <input type="text" name="keyword" class="form-control" placeholder="请输入关键字" maxlength="20" autocomplete="off">
+                            <span class="input-group-btn">
+                                <button type="submit" class="btn btn-default btn-search">搜索</button>
+                            </span>
+                        </div>
+                    </form>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="/">首页</a></li>
+                        <li><a href="?sort=2">博客</a></li>
+                        <!--<li><a href="404.html">广场</a></li>-->
+                        <li><a href="404.html">关于</a></li>
+                        <!--<li><a href="404.html">登陆</a></li>-->
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="introBanner">
+            <h3>一个技术盏</h3>
+            <p>长风破浪会有时，直挂云帆济沧海。</p>
+        </div>
+        <div class="content-wrap">
+            <div class="content">
+                <div class="title">
+                    <h3>{{ .titleMap.firstName }}</h3>
+                    <div class="more">
+                    <!--<a href="#">这里可以展示选中都tag和分类</a>-->
+                    </div>
+                </div>
+
+                <div {{ if eq .blogCount 0 }}class="data-list hidden" {{ else }} class="data-list" {{ end }}>
+                    {{ range $key,$vo := .blogList}}
+                    <div class="excerpt">
+                        <a href="/blog/detail?id={{ $vo.ArticleId }}">
+                            <header>
+                                <p class="cat">{{ $vo.Cate.Cate }}<i></i></p>
+                                {{ if ne $vo.Cover "" }}
+                                <h2>{{ $vo.Title }}</h2>
+                                {{ else }}
+                                <h2 style="margin-right: 155px">{{ $vo.Title }}</h2>
+                                {{ end }}
+                            </header>
+                            <div class="sketch">
+                                {{ if ne $vo.Cover "" }}
+                                <img class="cover" src="{{ $vo.Cover }}" alt="">
+                                <p class="sketch-p" style="margin-right: 155px;min-height: 70px">{{ $vo.Sketch }}</p>
+                                {{ else }}
+                                <p class="sketch-p">{{ $vo.Sketch }}</p>
+                                {{ end }}
+
+                            </div>
+
+                            <div class="meta">
+                                <div class="tag pull-left">
+                                    {{ range $k,$v := $vo.Tag }}
+                                    <a class="category" href="#"><i class="glyphicon glyphicon-tag"></i> {{$v.Tag}}</a>
+                                    {{ end }}
+                                </div>
+
+                                <div class="pull-right">
+                                    <a class="time" href="#"><i class="glyphicon glyphicon-time"></i> {{ $vo.CreateTime }}</a>
+                                    <a class="views" href="#"><i class="glyphicon glyphicon-eye-open"></i> {{ $vo.Pv }}</a>
+                                    <!--                            <a class="comment" style="margin-right: 0" href="#"><i class="glyphicon glyphicon-comment"></i> 评论数</a>-->
+                                </div>
+
+                            </div>
+                        </a>
+                    </div>
+                    {{ end }}
+                    <!-- 分页 -->
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination">
+                            <li>
+                                <a href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li><a href="#">1</a></li>
+                            <li><a href="#">2</a></li>
+                            <li>
+                                <a href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <div {{ if eq .blogCount 0 }} class="no-data" {{ else }} class="no-data hidden" {{ end }}>
+                    <p class="no-data-tips">暂无更多，敬请期待～～</p>
+                </div>
+
+
+
+            </div>
+
+            <div class="sidebar">
+                <div class="widget widget_hot">
+                    <h3><a href="{{ .titleMap.secUrl}}">{{ .titleMap.secondName }}</a></h3>
+                    <ul>
+                        {{ range $key,$vo := .secList}}
+                        <li>
+                            <a title="" href="/blog/detail?id={{ $vo.ArticleId }}">
+                                <span class="text">{{ $vo.Title}}</span>
+                                <span class="muted"><i class="glyphicon glyphicon-time"></i> {{ $vo.CreateTime }}</span>
+                                <span class="muted"><i class="glyphicon glyphicon-eye-open"></i> {{ $vo.Pv }}</span>
+                            </a>
+                        </li>
+                        {{ end }}
+
+                    </ul>
+                </div>
+
+                <div class="widget widget_category">
+                    <h3>文章分类</h3>
+                    <ul>
+                        {{ range $key,$vo := .cateList}}
+                        <li>
+                        <a href="/?cate={{ $vo.ID }}"
+                            {{if $vo.IsCurr}} class="select-tag" {{end}}
+                        >
+                            <span class="text"><i class="glyphicon glyphicon-triangle-right"></i> {{ $vo.Cate }}</span>
+                            <span class="count">{{ $vo.Count }}篇</span>
+                        </a></li>
+                        {{ end }}
+                    </ul>
+                </div>
+
+
+                <div class="widget widget_sentence">
+                    <h3>标签云</h3>
+                    <ul>
+                        {{ range $key,$vo := .tagList}}
+                        <li><a href="/?tag={{ $vo.ID }}"
+                               {{if $vo.IsCurr}} class="select-tag" {{end}}
+                        >
+                            {{ $vo.Tag }} <span class="badge">{{ $vo.Count }}</span>
+                        </a></li>
+                        {{ end }}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="container">
+            <p>Copyright &copy; 2018.Insomnia.Inc All rights reserved</p>
+        </div>
+    </div>
+
+
+
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+</body>
+
+</html>
+{{ end }}

@@ -1,0 +1,38 @@
+{{define "blog/index.html"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>博客列表</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/blog_list.css">
+</head>
+<body>
+    <p>{{.test}}</p>
+
+    <div class="list-bg">
+
+        {{ range $key,$vo := .list}}
+            <div class="blog">
+                <img src="{{ $vo.Cover}}" alt="" class="blog-left">
+                <div class="blog-right">
+                    <h1>{{ $vo.Title }}</h1>
+                    <div class="mid">
+                        <p>{{ $vo.Author.Name }}</p>
+                        <p>2020-02-05</p>
+                        <div class="tag">
+                            {{ range $k,$v := $vo.Tag}}
+                                <span>{{ $v.Tag }}</span>
+                            {{ end }}
+                        </div>
+                    </div>
+                    <p class="sketch">{{ $vo.Sketch }}</p>
+                </div>
+            </div>
+        {{ end }}
+
+    </div>
+
+
+</body>
+</html>
+{{end}}
